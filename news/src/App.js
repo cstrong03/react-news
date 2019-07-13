@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Article from './components/Article'
+import Header from './components/Header'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const Api_Key = INSERT_YOUR_ACCESS_KEY;
+
+
+class App extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      Topic:'Sports',
+      data: {}
+    }
+  }
+
+
+  getNews = (event)=>{
+  const url = `https://newsapi.org/v2/everything?q=${this.state.Topic}&apiKey=${Api_Key}`
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+
+      this.setState({
+        data: data
+      })
+        console.log(data);
+    })
+}
+componentDidMount(){
+  this.getNews()
+}
+
+  render() {
+    return (
+      <div className="App">
+        <Header title={this.handleUserRequest}/>
+        <Article data={this.state.data}/>
+      </div>
+    );
+  }
 }
 
 export default App;
